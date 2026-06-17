@@ -187,11 +187,21 @@ window.addEventListener("scroll", hidePopover, true);
 
 // Wire a single chip up to the popover.
 function attachPopover(chip, ev) {
-  // Computer: show on hover, hide when the pointer leaves.
-  chip.addEventListener("mouseenter", () => showPopover(ev, chip));
-  chip.addEventListener("mouseleave", scheduleHide);
+  // Desktop hover: react ONLY to a real mouse pointer.
+  // We must ignore touch here. A tap on a phone also fires a *simulated* "enter"
+  // BEFORE the tap completes; if we showed the popover that early, the tap's
+  // trailing click could land on the popover's link and jump straight to the
+  // shop page (a "ghost click"). Showing only on the final click (below) avoids it.
+  chip.addEventListener("pointerenter", (e) => {
+    if (e.pointerType === "mouse") showPopover(ev, chip);
+  });
+  chip.addEventListener("pointerleave", (e) => {
+    if (e.pointerType === "mouse") scheduleHide();
+  });
 
-  // Phone / click: tap toggles the popover (tap again, or the same chip, closes).
+  // Tap / click (all devices): toggle the popover open and closed.
+  // This is the LAST event in a tap, so nothing else fires afterward to
+  // accidentally trigger the link.
   chip.addEventListener("click", (e) => {
     e.preventDefault();
     e.stopPropagation();
