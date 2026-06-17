@@ -103,6 +103,106 @@ ALL_EVENTS.forEach((ev) => {
   EVENTS_BY_DAY[ev.date].push(ev);
 });
 
+// --- Event details popover -----------------------------------------------
+/*
+ * The calendar chips are tiny and get truncated, so we show a little card with
+ * the full details when you HOVER over a chip (on a computer) or TAP one (on a
+ * phone, where hover doesn't exist). The card also holds the "open event page"
+ * link, so on mobile you can read everything before deciding to tap through.
+ *
+ * We create ONE popover element and reuse it for every chip.
+ */
+const popover = document.createElement("div");
+popover.className = "event-popover";
+popover.hidden = true;
+document.body.appendChild(popover);
+
+let hideTimer = null; // lets us delay hiding so you can move into the popover
+let currentChip = null; // which chip the popover is currently showing
+
+// Fill the popover with one event's details.
+function fillPopover(ev) {
+  const when = toDate(ev.date, ev.time);
+  const dateLabel = when.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  });
+  popover.innerHTML = `
+    <span class="pop-tag cat-${ev.category}">${CATEGORY_LABELS[ev.category]}</span>
+    <div class="pop-name">${ev.name}</div>
+    <div class="pop-meta">${ev.shop}${ev.city ? " · " + ev.city : ""}</div>
+    <div class="pop-meta">${dateLabel} · ${prettyTime(ev.time)}</div>
+    <a class="pop-link" href="${eventLink(ev)}" target="_blank" rel="noopener">Open event page ↗</a>
+  `;
+}
+
+// Place the popover near the chip, flipping above / nudging sideways so it
+// never spills off the edge of the screen (important on narrow phones).
+function placePopover(chip) {
+  popover.hidden = false; // must be visible to measure its size
+  const c = chip.getBoundingClientRect();
+  const p = popover.getBoundingClientRect();
+
+  let top = c.bottom + 6; // default: just below the chip
+  if (top + p.height > window.innerHeight - 8) top = c.top - p.height - 6; // flip up
+
+  let left = c.left;
+  if (left + p.width > window.innerWidth - 8) left = window.innerWidth - p.width - 8;
+  if (left < 8) left = 8;
+
+  popover.style.top = `${Math.max(8, top)}px`;
+  popover.style.left = `${left}px`;
+}
+
+function showPopover(ev, chip) {
+  clearTimeout(hideTimer);
+  currentChip = chip;
+  fillPopover(ev);
+  placePopover(chip);
+}
+
+function hidePopover() {
+  popover.hidden = true;
+  currentChip = null;
+}
+
+// Hide after a short pause (so the pointer has time to travel to the popover).
+function scheduleHide() {
+  hideTimer = setTimeout(hidePopover, 250);
+}
+
+// Keep the popover open while the pointer is over IT (so the link is clickable).
+popover.addEventListener("mouseenter", () => clearTimeout(hideTimer));
+popover.addEventListener("mouseleave", scheduleHide);
+
+// Close when tapping/clicking elsewhere, pressing Escape, or scrolling.
+document.addEventListener("click", (e) => {
+  if (!popover.contains(e.target) && !e.target.closest(".event-chip")) hidePopover();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") hidePopover();
+});
+window.addEventListener("scroll", hidePopover, true);
+
+// Wire a single chip up to the popover.
+function attachPopover(chip, ev) {
+  // Computer: show on hover, hide when the pointer leaves.
+  chip.addEventListener("mouseenter", () => showPopover(ev, chip));
+  chip.addEventListener("mouseleave", scheduleHide);
+
+  // Phone / click: tap toggles the popover (tap again, or the same chip, closes).
+  chip.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!popover.hidden && currentChip === chip) {
+      hidePopover();
+    } else {
+      showPopover(ev, chip);
+    }
+  });
+}
+
 // --- Calendar -------------------------------------------------------------
 
 const MONTH_NAMES = [
@@ -161,13 +261,13 @@ function renderCalendar() {
       (a.time || "").localeCompare(b.time || "")
     );
     dayEvents.forEach((ev) => {
-      const chip = document.createElement("a");
+      // A button (not a link) so a tap on mobile shows details first instead of
+      // jumping straight to the shop page. The link lives inside the popover.
+      const chip = document.createElement("button");
+      chip.type = "button";
       chip.className = `event-chip cat-${ev.category}`;
-      chip.href = eventLink(ev);
-      chip.target = "_blank"; // open the shop/map in a new tab
-      chip.rel = "noopener";
-      chip.title = `${ev.name} · ${ev.shop} · ${prettyTime(ev.time)}`;
       chip.textContent = `${prettyTime(ev.time)} ${ev.shop}`;
+      attachPopover(chip, ev); // hover (desktop) or tap (mobile) shows full info
       cell.appendChild(chip);
     });
 

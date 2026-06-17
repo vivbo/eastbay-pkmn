@@ -149,21 +149,73 @@ main {
   margin-bottom: 3px;
 }
 
-/* Event chips inside a day cell */
+/* Event chips inside a day cell (these are <button>s, so reset button styling) */
 .event-chip {
   display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  font-family: inherit;
   font-size: 0.68rem;
   padding: 2px 5px;
   margin-bottom: 3px;
   border-radius: 5px;
   color: white;
-  text-decoration: none;
+  cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .event-chip:hover {
   filter: brightness(1.08);
+}
+
+/* The details popover that appears on hover / tap */
+.event-popover {
+  position: fixed;
+  z-index: 50;
+  width: 230px;
+  max-width: calc(100vw - 16px);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  padding: 11px 13px;
+}
+.event-popover[hidden] {
+  display: none;
+}
+.pop-tag {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: white;
+  padding: 1px 7px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+}
+.pop-name {
+  font-weight: 700;
+  font-size: 0.92rem;
+  margin-bottom: 4px;
+  color: var(--ink);
+  white-space: normal; /* allow the full name to wrap */
+}
+.pop-meta {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.pop-link {
+  display: inline-block;
+  margin-top: 9px;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+.pop-link:hover {
+  text-decoration: underline;
 }
 
 .calendar-hint {
