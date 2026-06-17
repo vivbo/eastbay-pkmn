@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>East Bay Pokémon TCG Events</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Page header -->
+    <header class="site-header">
+      <h1>East Bay Pokémon TCG Events</h1>
+      <p class="subtitle">Cups, Challenges, prereleases &amp; weekly friendlies within ~25 mi of Oakland</p>
+    </header>
+
+    <main>
+      <!-- Color key so people know what each chip color means -->
+      <div class="legend">
+        <span class="legend-item"><span class="dot cat-cup"></span> League Cup</span>
+        <span class="legend-item"><span class="dot cat-challenge"></span> League Challenge</span>
+        <span class="legend-item"><span class="dot cat-prerelease"></span> Prerelease</span>
+        <span class="legend-item"><span class="dot cat-friendly"></span> Weekly Friendly</span>
+      </div>
+
+      <!-- CALENDAR -->
+      <section class="calendar-section">
+        <div class="calendar-header">
+          <button id="prev-month" class="nav-btn" aria-label="Previous month">‹</button>
+          <h2 id="calendar-title">Month</h2>
+          <button id="next-month" class="nav-btn" aria-label="Next month">›</button>
+        </div>
+        <div id="calendar-grid" class="calendar-grid"></div>
+        <p class="calendar-hint">Click any event to open the shop's page or a map. Some details change — confirm with the shop.</p>
+      </section>
+
+      <!-- THE TWO FEEDS, side by side on wide screens -->
+      <div class="feeds">
+        <section class="feed">
+          <h2>This Week's Events</h2>
+          <ul id="this-week-list" class="feed-list"></ul>
+          <p id="this-week-empty" class="feed-empty">No events left this week. Check the calendar for what's coming up.</p>
+        </section>
+
+        <section class="feed">
+          <h2>Upcoming Cups &amp; Challenges</h2>
+          <ul id="cups-list" class="feed-list"></ul>
+          <p id="cups-empty" class="feed-empty">No Cups or Challenges on the calendar yet. Re-export from pokedata to refresh.</p>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>Sanctioned events via <a href="https://pokedata.ovh/events/" target="_blank" rel="noopener">pokedata.ovh</a> · Weekly friendlies kept by hand.</p>
+    </footer>
+
+    <!-- Data files load first, then the logic that uses them -->
+    <script src="data.js"></script>
+    <script src="recurring.js"></script>
+    <script src="shops.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
