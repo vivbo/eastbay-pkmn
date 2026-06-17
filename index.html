@@ -9,8 +9,36 @@
   <body>
     <!-- Page header -->
     <header class="site-header">
-      <h1>East Bay Pokémon TCG Events</h1>
-      <p class="subtitle">Cups, Challenges, prereleases &amp; weekly friendlies within ~25 mi of Oakland</p>
+      <div class="header-text">
+        <h1>East Bay Pokémon TCG Events</h1>
+        <p class="subtitle">Cups, Challenges, prereleases &amp; weekly friendlies within ~25 mi of Oakland</p>
+      </div>
+
+      <!-- Decorative Pikachu (original illustration). Purely cosmetic, so it's
+           hidden from screen readers and ignores clicks. -->
+      <svg class="header-pikachu" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g stroke="#6b531c" stroke-width="2.5" stroke-linejoin="round">
+          <!-- Ears -->
+          <polygon points="47,47 35,49 12,11" fill="#FFCB05" />
+          <polygon points="73,47 85,49 108,11" fill="#FFCB05" />
+          <!-- Head -->
+          <ellipse cx="60" cy="69" rx="40" ry="36" fill="#FFCB05" />
+        </g>
+        <!-- Black ear tips -->
+        <polygon points="12,11 23,22 18,23" fill="#3a3a3a" />
+        <polygon points="108,11 97,22 102,23" fill="#3a3a3a" />
+        <!-- Red cheeks -->
+        <circle cx="31" cy="80" r="9" fill="#E3350D" />
+        <circle cx="89" cy="80" r="9" fill="#E3350D" />
+        <!-- Eyes with highlights -->
+        <circle cx="45" cy="63" r="7" fill="#2b2b2b" />
+        <circle cx="75" cy="63" r="7" fill="#2b2b2b" />
+        <circle cx="47" cy="60" r="2.4" fill="#ffffff" />
+        <circle cx="77" cy="60" r="2.4" fill="#ffffff" />
+        <!-- Nose + smiling mouth -->
+        <path d="M57 71 Q60 73 63 71" fill="none" stroke="#2b2b2b" stroke-width="2" stroke-linecap="round" />
+        <path d="M49 79 Q60 90 71 79" fill="none" stroke="#2b2b2b" stroke-width="2.5" stroke-linecap="round" />
+      </svg>
     </header>
 
     <main>

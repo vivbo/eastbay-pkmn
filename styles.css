@@ -33,10 +33,25 @@ body {
 
 /* --- Header --- */
 .site-header {
+  position: relative; /* anchor for the absolutely-placed Pikachu */
   background: linear-gradient(135deg, var(--accent), #16307a);
   color: white;
   padding: 28px 20px;
   text-align: center;
+  overflow: hidden; /* keep the art from spilling outside the banner */
+}
+.header-text {
+  /* Cap the text width and center it so it never runs under the Pikachu. */
+  max-width: 640px;
+  margin: 0 auto;
+}
+.header-pikachu {
+  position: absolute;
+  right: 22px;
+  bottom: 0;
+  height: 96px;
+  width: auto;
+  pointer-events: none; /* decorative only */
 }
 .site-header h1 {
   margin: 0;
@@ -338,5 +353,13 @@ main {
   }
   .event-chip {
     font-size: 0.6rem;
+  }
+  /* Shrink Pikachu and reserve room on the right so it never covers the text. */
+  .header-pikachu {
+    height: 58px;
+    right: 10px;
+  }
+  .header-text {
+    padding: 0 64px; /* keep the centered text inside, clear of the art */
   }
 }
