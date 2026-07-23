@@ -14,9 +14,20 @@
         <p class="subtitle">Cups, Challenges, prereleases &amp; weekly friendlies within ~25 mi of Oakland</p>
       </div>
 
-      <!-- Decorative Pikachu (original illustration). Purely cosmetic, so it's
-           hidden from screen readers and ignores clicks. -->
-      <svg class="header-pikachu" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Decorative header mascot. Uses the pokemon-fuecoco.png file in this
+           folder; if that file is ever missing, it falls back to the built-in
+           SVG illustration below so the header always has art. To use a
+           different image, drop it in and update the src filename here. -->
+      <img
+        class="header-pikachu"
+        src="pokemon-fuecoco.png"
+        alt="Fuecoco"
+        onload="var f=document.getElementById('pikachu-fallback'); if(f) f.remove();"
+        onerror="this.remove();"
+      />
+
+      <!-- Built-in fallback illustration (purely cosmetic, hidden from screen readers). -->
+      <svg id="pikachu-fallback" class="header-pikachu" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <g stroke="#6b531c" stroke-width="2.5" stroke-linejoin="round">
           <!-- Ears -->
           <polygon points="47,47 35,49 12,11" fill="#FFCB05" />
